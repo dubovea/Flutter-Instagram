@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:instagramexample/heart_icon_animator.dart';
+import 'package:instagramexample/components/heart_icon_animator.dart';
 import 'package:instagramexample/models.dart';
 import 'package:instagramexample/ui_utils.dart';
 

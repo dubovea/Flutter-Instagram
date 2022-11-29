@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:instagramexample/heart_icon_animator.dart';
-import 'package:instagramexample/heart_overlay_animator.dart';
+import 'package:instagramexample/components/heart_icon_animator.dart';
+import 'package:instagramexample/components/heart_overlay_animator.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:instagramexample/models.dart';
-import 'package:instagramexample/avatar_widget.dart';
-import 'package:instagramexample/comment_widget.dart';
+import 'package:instagramexample/components/avatar_widget.dart';
+import 'package:instagramexample/components/comment_widget.dart';
 import 'package:instagramexample/ui_utils.dart';
 
 class PostWidget extends StatefulWidget {

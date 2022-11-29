@@ -1,11 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:instagramexample/pages/authorization.dart';
 import 'package:instagramexample/pages/home.dart';
-import 'package:instagramexample/home_feed_page.dart';
+import 'package:instagramexample/pages/favourites.dart';
 import 'package:instagramexample/ui_utils.dart';
 
 void main() {
@@ -29,7 +27,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => Auhorization(),
         '/main': (context) => MainScaffold(),
-        '/home': (context) => Home(tabName: 'Home'),
+        '/favourites': (context) => Favourites(tabName: 'Home'),
       },
     );
   }
@@ -85,27 +83,34 @@ class _MainScaffoldState extends State<MainScaffold> {
     }
   }
 
-  Widget _buildPlaceHolderTab(String tabName) {
-    return Home(tabName: tabName);
-  }
+  Widget? _buildBody() {
+    const tabIndexToNameMap = {
+      0: 'home',
+      1: 'Search',
+      2: 'Add Photo',
+      3: 'Notifications',
+      4: 'Profile',
+    };
+    var tabName = tabIndexToNameMap[_tabSelectedIndex]!;
 
-  Widget _buildBody() {
     switch (_tabSelectedIndex) {
       case 0:
         _scrollController =
             ScrollController(initialScrollOffset: _lastFeedScrollOffset);
-        return HomeFeedPage(scrollController: _scrollController);
-      default:
-        const tabIndexToNameMap = {
-          0: 'Home',
-          1: 'Search',
-          2: 'Add Photo',
-          3: 'Notifications',
-          4: 'Profile',
-        };
+        return Home(scrollController: _scrollController);
+      case 1:
         _handleScroll();
-
-        return _buildPlaceHolderTab(tabIndexToNameMap[_tabSelectedIndex]!);
+        return Favourites(tabName: tabName);
+      case 2:
+        _handleScroll();
+        return Favourites(tabName: tabName);
+      case 3:
+        _handleScroll();
+        return Favourites(tabName: tabName);
+      case 4:
+        _handleScroll();
+        return Favourites(tabName: tabName);
+      default:
     }
   }
 
