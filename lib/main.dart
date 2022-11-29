@@ -1,20 +1,31 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:instagramexample/pages/authorization.dart';
 import 'package:instagramexample/pages/home.dart';
 import 'package:instagramexample/pages/favourites.dart';
+import 'package:instagramexample/components/camera.dart';
 import 'package:instagramexample/ui_utils.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Obtain a list of the available cameras on the device.
+  final cameras = await availableCameras();
+
+  // Get a specific camera from the list of available cameras.
+  final firstCamera = cameras.first;
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
-    runApp(new MyApp());
+    runApp(new MyApp(firstCamera: firstCamera));
   });
 }
 
 class MyApp extends StatelessWidget {
+  var firstCamera;
+
+  MyApp({super.key, required this.firstCamera});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,6 +39,10 @@ class MyApp extends StatelessWidget {
         '/': (context) => Auhorization(),
         '/main': (context) => MainScaffold(),
         '/favourites': (context) => Favourites(tabName: 'Home'),
+        '/camera': (context) => Camera(
+              // Pass the appropriate camera to the TakePictureScreen widget.
+              camera: firstCamera,
+            ),
       },
     );
   }
@@ -46,6 +61,8 @@ class _MainScaffoldState extends State<MainScaffold> {
   // used when navigating back to the home page from another tab.
   double _lastFeedScrollOffset = 0;
   late ScrollController _scrollController;
+
+  get firstCamera => firstCamera;
 
   @override
   void dispose() {
@@ -75,7 +92,7 @@ class _MainScaffoldState extends State<MainScaffold> {
 
   void _onTabTapped(BuildContext context, int index) {
     if (index == _kAddPhotoTabIndex) {
-      showSnackbar(context, 'Add Photo');
+      _openCamera();
     } else if (index == _tabSelectedIndex) {
       _scrollToTop();
     } else {
@@ -112,6 +129,10 @@ class _MainScaffoldState extends State<MainScaffold> {
         return Favourites(tabName: tabName);
       default:
     }
+  }
+
+  void _openCamera() async {
+    Navigator.pushNamedAndRemoveUntil(context, '/camera', (route) => true);
   }
 
   // Unselected tabs are outline icons, while the selected tab should be solid.

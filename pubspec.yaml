@@ -11,6 +11,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  camera:
+  path_provider:
+  path:
   cupertino_icons: ^1.0.2
   outline_material_icons: ^0.1.1
   carousel_slider: ^4.1.1
