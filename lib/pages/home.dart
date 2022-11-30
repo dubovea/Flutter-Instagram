@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagramexample/components/avatar_widget.dart';
 import 'package:instagramexample/components/post_widget.dart';
-import 'package:instagramexample/models.dart';
-import 'package:instagramexample/ui_utils.dart';
+import 'package:instagramexample/utils/models.dart';
+import 'package:instagramexample/utils/ui_utils.dart';
 
 class Home extends StatefulWidget {
   final ScrollController scrollController;
@@ -64,10 +65,18 @@ class _HomeState extends State<Home> {
         if (i == 0) {
           return StoriesBarWidget();
         }
-        return PostWidget(_posts[i - 1]);
+        return StreamBuilder(
+            stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return Text('No records');
+              }
+              return PostWidget(snapshot.data?.docs[i - 1] as Post);
+            });
+
+        // PostWidget(_posts[i - 1]);
       },
-      itemCount: _posts.length + 1,
-      controller: widget.scrollController,
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instagramexample/models.dart';
+import 'package:instagramexample/utils/models.dart';
 
 class AvatarWidget extends StatelessWidget {
   final User user;

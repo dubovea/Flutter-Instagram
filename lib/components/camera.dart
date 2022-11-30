@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/storage_service.dart';
+
 class Camera extends StatefulWidget {
   const Camera({
     super.key,
@@ -99,9 +101,10 @@ class CameraState extends State<Camera> {
 
 // A widget that displays the picture taken by the user.
 class DisplayPictureScreen extends StatelessWidget {
+  final Storage storage = Storage();
   final String imagePath;
 
-  const DisplayPictureScreen({super.key, required this.imagePath});
+  DisplayPictureScreen({super.key, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -115,8 +118,13 @@ class DisplayPictureScreen extends StatelessWidget {
           File(imagePath),
         ),
       )),
-      bottomNavigationBar:
-          TextButton(onPressed: () {}, child: Text('Добавить')),
+      bottomNavigationBar: TextButton(
+          onPressed: () {
+            storage
+                .uploadFile(imagePath, 'fileName')
+                .then((value) => print('Done'));
+          },
+          child: Text('Добавить')),
     );
   }
 }

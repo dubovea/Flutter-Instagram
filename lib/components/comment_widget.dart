@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:instagramexample/components/heart_icon_animator.dart';
-import 'package:instagramexample/models.dart';
-import 'package:instagramexample/ui_utils.dart';
+import 'package:instagramexample/utils/models.dart';
+import 'package:instagramexample/utils/ui_utils.dart';
 
 class CommentWidget extends StatefulWidget {
   final Comment comment;

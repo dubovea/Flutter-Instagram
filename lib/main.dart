@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -6,10 +7,11 @@ import 'package:instagramexample/pages/authorization.dart';
 import 'package:instagramexample/pages/home.dart';
 import 'package:instagramexample/pages/favourites.dart';
 import 'package:instagramexample/components/camera.dart';
-import 'package:instagramexample/ui_utils.dart';
+import 'package:instagramexample/utils/ui_utils.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(); 
   // Obtain a list of the available cameras on the device.
   final cameras = await availableCameras();
 

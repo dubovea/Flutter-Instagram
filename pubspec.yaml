@@ -11,6 +11,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  cloud_firestore:
+  firebase_core:
+  firebase_storage:
   camera:
   path_provider:
   path:

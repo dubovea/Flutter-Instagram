@@ -5,10 +5,10 @@ import 'package:instagramexample/components/heart_icon_animator.dart';
 import 'package:instagramexample/components/heart_overlay_animator.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:instagramexample/models.dart';
+import 'package:instagramexample/utils/models.dart';
 import 'package:instagramexample/components/avatar_widget.dart';
 import 'package:instagramexample/components/comment_widget.dart';
-import 'package:instagramexample/ui_utils.dart';
+import 'package:instagramexample/utils/ui_utils.dart';
 
 class PostWidget extends StatefulWidget {
   final Post post;
