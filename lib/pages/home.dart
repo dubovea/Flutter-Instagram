@@ -23,9 +23,9 @@ class Home extends StatelessWidget {
               var postData = snapshot.data!.docs[i].get('post');
               Post post = Post(
                 user: grootlover,
-                imageUrls: postData['imageUrls'].cast<String>(),
-                likes: postData['likes'].cast<Like>(),
-                comments: postData['comments'].cast<Comment>(),
+                imageUrls: List<String>.from(postData['imageUrls']),
+                likes: List<Like>.from(postData['likes']),
+                comments: List<Comment>.from(postData['comments']),
                 location: postData['location'],
                 postedAt: postData['postedAt'].toDate(),
               );
