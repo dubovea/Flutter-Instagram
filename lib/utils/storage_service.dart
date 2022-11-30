@@ -16,10 +16,14 @@ class Storage {
       if (snapshot.state == firebase_storage.TaskState.success) {
         final String downloadUrl = await snapshot.ref.getDownloadURL();
         FirebaseFirestore.instance.collection('posts').add({
-          'user': 'Dubov_EA',
-          'imageUrls': [downloadUrl],
-          'postedAt': DateTime.now(),
-          'location': 'Surgut'
+          'post': {
+            'user': 'Dubov_EA',
+            'imageUrls': [downloadUrl],
+            'likes': [],
+            'comments': [],
+            'postedAt': DateTime.now(),
+            'location': 'Surgut'
+          }
         });
       } else {
         print('Error link table to image url');

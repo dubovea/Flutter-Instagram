@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagramexample/components/avatar_widget.dart';
@@ -39,45 +41,36 @@ class _HomeState extends State<Home> {
       ],
       location: 'Earth',
       postedAt: DateTime(2019, 5, 23, 12, 35, 0),
-    ),
-    Post(
-      user: nickwu241,
-      imageUrls: ['assets/images/groot2.jpg'],
-      likes: [],
-      comments: [],
-      location: 'Knowhere',
-      postedAt: DateTime(2019, 5, 21, 6, 0, 0),
-    ),
-    Post(
-      user: nebula,
-      imageUrls: ['assets/images/groot6.jpg'],
-      likes: [Like(user: nickwu241)],
-      comments: [],
-      location: 'Nine Realms',
-      postedAt: DateTime(2019, 5, 2, 0, 0, 0),
-    ),
+    )
   ];
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (ctx, i) {
-        if (i == 0) {
-          return StoriesBarWidget();
-        }
-        return StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('posts').snapshots(),
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (!snapshot.hasData) {
-                return Text('No records');
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Text('No records');
+          }
+          return ListView.builder(
+            itemCount: snapshot.data?.docs.length,
+            itemBuilder: (ctx, i) {
+              var postData = snapshot.data!.docs[i].get('post');
+              Post post = Post(
+                user: grootlover,
+                imageUrls: postData['imageUrls'].cast<String>(),
+                likes: postData['likes'].cast<Like>(),
+                comments: postData['comments'].cast<Comment>(),
+                location: postData['location'],
+                postedAt: postData['postedAt'].toDate(),
+              );
+              if (i == 0) {
+                return Column(children: [StoriesBarWidget(), PostWidget(post)]);
               }
-              return PostWidget(snapshot.data?.docs[i - 1] as Post);
-            });
-
-        // PostWidget(_posts[i - 1]);
-      },
-    );
+              return PostWidget(post);
+            },
+          );
+        });
   }
 }
 

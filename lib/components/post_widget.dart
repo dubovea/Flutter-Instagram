@@ -107,7 +107,7 @@ class _PostWidgetState extends State<PostWidget> {
             children: <Widget>[
               CarouselSlider(
                   items: widget.post.imageUrls.map((url) {
-                    return Image.asset(
+                    return Image.network(
                       url,
                       fit: BoxFit.fitWidth,
                       width: MediaQuery.of(context).size.width,
