@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:dart_now_time_filename/dart_now_time_filename.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
@@ -120,11 +120,16 @@ class DisplayPictureScreen extends StatelessWidget {
       )),
       bottomNavigationBar: TextButton(
           onPressed: () {
+            final filename = NowFilename.gen(prefix: 'inst-', ext: '.jpeg');
             storage
-                .uploadFile(imagePath, 'fileName')
+                .uploadFile(imagePath, filename)
                 .then((value) => print('Done'));
+
+            //TODO
+            Navigator.pop(context);
+            Navigator.pop(context);
           },
-          child: Text('Добавить')),
+          child: const Text('Добавить')),
     );
   }
 }

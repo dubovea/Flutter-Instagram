@@ -21,6 +21,7 @@ dependencies:
   outline_material_icons: ^0.1.1
   carousel_slider: ^4.1.1
   timeago: ^3.3.0
+  dart_now_time_filename: ^2.0.2
 
 dev_dependencies:
   flutter_test:

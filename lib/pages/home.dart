@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagramexample/components/avatar_widget.dart';
@@ -7,50 +5,17 @@ import 'package:instagramexample/components/post_widget.dart';
 import 'package:instagramexample/utils/models.dart';
 import 'package:instagramexample/utils/ui_utils.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   final ScrollController scrollController;
 
-  Home({required this.scrollController});
-
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  final _posts = <Post>[
-    Post(
-      user: grootlover,
-      imageUrls: [
-        'assets/images/groot1.jpg',
-        'assets/images/groot4.jpg',
-        'assets/images/groot5.jpg',
-      ],
-      likes: [
-        Like(user: rocket),
-        Like(user: starlord),
-        Like(user: gamora),
-        Like(user: nickwu241),
-      ],
-      comments: [
-        Comment(
-          text: 'So we’re saving the galaxy again? #gotg',
-          user: rocket,
-          commentedAt: DateTime(2019, 5, 23, 14, 35, 0),
-          likes: [Like(user: nickwu241)],
-        ),
-      ],
-      location: 'Earth',
-      postedAt: DateTime(2019, 5, 23, 12, 35, 0),
-    )
-  ];
-
+  const Home({super.key, required this.scrollController});
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: FirebaseFirestore.instance.collection('posts').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
-            return Text('No records');
+            return const Text('No records');
           }
           return ListView.builder(
             itemCount: snapshot.data?.docs.length,
@@ -84,6 +49,8 @@ class StoriesBarWidget extends StatelessWidget {
     gamora,
   ];
 
+  StoriesBarWidget({super.key});
+
   void _onUserStoryTap(BuildContext context, int i) {
     final message =
         i == 0 ? 'Add to Your Story' : "View ${_users[i].name}'s Story";
@@ -92,7 +59,7 @@ class StoriesBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 106.0,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,

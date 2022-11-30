@@ -6,7 +6,7 @@ const placeholderStories = <Story>[Story()];
 const nickwu241 =
     User(name: 'nickwu241', imageUrl: 'assets/images/nickwu241.jpg');
 const grootlover = User(
-    name: 'grootlover',
+    name: 'ilikeredbananas',
     imageUrl: 'assets/images/grootlover.jpg',
     stories: placeholderStories);
 const starlord = User(
