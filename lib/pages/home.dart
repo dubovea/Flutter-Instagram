@@ -20,12 +20,16 @@ class Home extends StatelessWidget {
           return ListView.builder(
             itemCount: snapshot.data?.docs.length,
             itemBuilder: (ctx, i) {
-              var postData = snapshot.data!.docs[i].get('post');
+              var postData = snapshot.data!.docs[i].get('post'),
+                  likesData = List.from(postData['likes'])
+                      .map((o) =>
+                          Like(user: User(name: o['user'], imageUrl: '')))
+                      .toList();
               Post post = Post(
                 id: snapshot.data!.docs[i].id,
                 user: grootlover,
                 imageUrls: List<String>.from(postData['imageUrls']),
-                likes: List<Like>.from(postData['likes']),
+                likes: likesData,
                 comments: List<Comment>.from(postData['comments']),
                 location: postData['location'],
                 postedAt: postData['postedAt'].toDate(),

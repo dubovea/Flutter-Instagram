@@ -31,7 +31,7 @@ const nebula = User(
     imageUrl: 'assets/images/nebula.jpg',
     stories: placeholderStories);
 
-const currentUser = nickwu241;
+const currentUser = starlord;
 
 class Post {
   final String id;

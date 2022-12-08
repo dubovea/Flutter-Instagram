@@ -216,11 +216,11 @@ class _PostWidgetState extends State<PostWidget> {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Row(
                     children: <Widget>[
-                      Text('Liked by '),
+                      Text('Нравится '),
                       Text(widget.post.likes[0].user.name, style: bold),
                       if (widget.post.likes.length > 1) ...[
-                        Text(' and'),
-                        Text(' ${widget.post.likes.length - 1} others',
+                        Text(' и еще'),
+                        Text(' ${widget.post.likes.length - 1}',
                             style: bold),
                       ]
                     ],

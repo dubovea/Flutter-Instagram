@@ -54,11 +54,13 @@ class Storage {
       await FirebaseFirestore.instance
           .collection("posts")
           .doc(id)
-          .update({
-            'likes': [
-              {'user': user.name}
-            ]
-          })
+          .set({
+            'post': {
+              'likes': FieldValue.arrayUnion([
+                {'user': user.name}
+              ])
+            }
+          }, SetOptions(merge: true))
           .then((value) => isLikeAdded = true)
           .catchError((error) => print('Error add like for doc $id'));
       return isLikeAdded;
@@ -73,7 +75,7 @@ class Storage {
               .collection("posts")
               .doc(id)
               .get(),
-          likes = snapshot.data()!['likes'];
+          likes = snapshot.data()!['post']['likes'];
       if (likes != null) {
         return likes.any((o) => user.name == o['user']);
       }
@@ -91,13 +93,16 @@ class Storage {
               .collection("posts")
               .doc(id)
               .get(),
-          likes = data.data()!['likes'];
+          likes = data.data()!['post']['likes'],
+          record = likes.firstWhere((like) => like['user'] == user.name);
       await FirebaseFirestore.instance
           .collection("posts")
           .doc(id)
-          .update({
-            'likes': likes.removeWhere((like) => like['user'] == user.name)
-          }) // <-- Updated data
+          .set({
+            'post': {
+              'likes': FieldValue.arrayRemove([record])
+            }
+          }, SetOptions(merge: true))
           .then((_) => isLiked = false)
           .catchError((error) => print('Error remove like for doc $id'));
       return isLiked;
