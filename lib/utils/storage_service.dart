@@ -1,7 +1,9 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
+import 'package:instagramexample/utils/models.dart';
 
 class Storage {
   final firebase_storage.FirebaseStorage storage =
@@ -30,6 +32,78 @@ class Storage {
       }
     } on firebase_core.FirebaseException catch (e) {
       print(e);
+    }
+  }
+
+  Future<void> deletePost(String id) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("posts")
+          .doc(id)
+          .delete()
+          .then((_) => print('Deleted $id'))
+          .catchError((error) => print('Delete failed: $error'));
+    } catch (e) {
+      print('Delete failed');
+    }
+  }
+
+  Future<bool> addLike(String id, User user) async {
+    bool isLikeAdded = false;
+    try {
+      await FirebaseFirestore.instance
+          .collection("posts")
+          .doc(id)
+          .update({
+            'likes': [
+              {'user': user.name}
+            ]
+          })
+          .then((value) => isLikeAdded = true)
+          .catchError((error) => print('Error add like for doc $id'));
+      return isLikeAdded;
+    } catch (e) {
+      throw Exception('addLike failed');
+    }
+  }
+
+  Future<bool> checkIsLikedBy(String id, User user) async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+              .collection("posts")
+              .doc(id)
+              .get(),
+          likes = snapshot.data()!['likes'];
+      if (likes != null) {
+        return likes.any((o) => user.name == o['user']);
+      }
+      return false;
+      // <-- Updated data
+    } catch (e) {
+      throw Exception('checkIsLikedBy failed');
+    }
+  }
+
+  Future<bool> removeLike(String id, User user) async {
+    bool isLiked = true;
+    try {
+      final data = await FirebaseFirestore.instance
+              .collection("posts")
+              .doc(id)
+              .get(),
+          likes = data.data()!['likes'];
+      await FirebaseFirestore.instance
+          .collection("posts")
+          .doc(id)
+          .update({
+            'likes': likes.removeWhere((like) => like['user'] == user.name)
+          }) // <-- Updated data
+          .then((_) => isLiked = false)
+          .catchError((error) => print('Error remove like for doc $id'));
+      return isLiked;
+      // <-- Updated data
+    } catch (e) {
+      throw Exception('removeLike failed');
     }
   }
 }

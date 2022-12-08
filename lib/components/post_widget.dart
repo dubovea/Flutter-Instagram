@@ -9,6 +9,7 @@ import 'package:instagramexample/utils/models.dart';
 import 'package:instagramexample/components/avatar_widget.dart';
 import 'package:instagramexample/components/comment_widget.dart';
 import 'package:instagramexample/utils/ui_utils.dart';
+import 'package:instagramexample/utils/storage_service.dart';
 
 class PostWidget extends StatefulWidget {
   final Post post;
@@ -22,6 +23,7 @@ class PostWidget extends StatefulWidget {
 class _PostWidgetState extends State<PostWidget> {
   final StreamController<void> _doubleTapImageEvents =
       StreamController.broadcast();
+  bool _isLiked = false;
   bool _isSaved = false;
   int _currentImageIndex = 0;
 
@@ -31,17 +33,30 @@ class _PostWidgetState extends State<PostWidget> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    super.initState();
+    _asyncCheckIsLiked();
+  }
+
+  void _asyncCheckIsLiked() async {
+    _isLiked = await widget.post.isLikedBy(widget.post.id, currentUser);
+    setState(() => _isLiked = _isLiked);
+  }
+
   void _updateImageIndex(int index, reason) {
     setState(() => _currentImageIndex = index);
   }
 
   void _onDoubleTapLikePhoto() {
-    setState(() => widget.post.addLikeIfUnlikedFor(currentUser));
+    setState(
+        () => widget.post.addLikeIfUnlikedFor(widget.post.id, currentUser));
     _doubleTapImageEvents.sink.add(null);
   }
 
-  void _toggleIsLiked() {
-    setState(() => widget.post.toggleLikeFor(currentUser));
+  void _toggleIsLiked() async {
+    _isLiked = await widget.post.toggleLikeFor(widget.post.id, currentUser);
+    setState(() => _isLiked = _isLiked);
   }
 
   void _toggleIsSaved() {
@@ -74,6 +89,8 @@ class _PostWidgetState extends State<PostWidget> {
     );
   }
 
+  final Storage storage = Storage();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -92,11 +109,34 @@ class _PostWidgetState extends State<PostWidget> {
                 if (widget.post.location != null) Text(widget.post.location)
               ],
             ),
-            Spacer(),
-            IconButton(
-              icon: Icon(Icons.more_vert),
-              onPressed: () => showSnackbar(context, 'More'),
-            )
+            const Spacer(),
+            PopupMenuButton(
+              initialValue: 2,
+              child: Center(child: Icon(Icons.more_vert)),
+              itemBuilder: (context) {
+                return List.generate(1, (index) {
+                  return PopupMenuItem(
+                    value: index,
+                    child: TextButton.icon(
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.black,
+                      ),
+                      onPressed: () {
+                        storage
+                            .deletePost(widget.post.id)
+                            .then((_) =>
+                                print('Delete success ${widget.post.id}'))
+                            .catchError(
+                                (error) => print('Delete success $error'));
+                      },
+                      label: const Text('Удалить',
+                          style: TextStyle(color: Colors.black)),
+                    ),
+                  );
+                });
+              },
+            ),
           ],
         ),
         // Photo Carosuel
@@ -130,7 +170,7 @@ class _PostWidgetState extends State<PostWidget> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: HeartIconAnimator(
-                isLiked: widget.post.isLikedBy(currentUser),
+                isLiked: _isLiked,
                 size: 28.0,
                 onTap: _toggleIsLiked,
                 triggerAnimationStream: _doubleTapImageEvents.stream,

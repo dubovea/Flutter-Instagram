@@ -22,6 +22,7 @@ class Home extends StatelessWidget {
             itemBuilder: (ctx, i) {
               var postData = snapshot.data!.docs[i].get('post');
               Post post = Post(
+                id: snapshot.data!.docs[i].id,
                 user: grootlover,
                 imageUrls: List<String>.from(postData['imageUrls']),
                 likes: List<Like>.from(postData['likes']),

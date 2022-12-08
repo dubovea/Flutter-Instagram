@@ -9,5 +9,6 @@ void showSnackbar(BuildContext context, String text) {
   );
 }
 
+
 const bold = TextStyle(fontWeight: FontWeight.bold);
 const link = TextStyle(color: Color(0xFF3F729B));

@@ -1,5 +1,10 @@
+import 'dart:developer';
+
 import 'package:meta/meta.dart';
+import 'package:instagramexample/utils/storage_service.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
+final Storage storage = Storage();
 
 const placeholderStories = <Story>[Story()];
 
@@ -29,6 +34,7 @@ const nebula = User(
 const currentUser = nickwu241;
 
 class Post {
+  final String id;
   List<String> imageUrls;
   final User user;
   final DateTime postedAt;
@@ -42,25 +48,28 @@ class Post {
     return timeago.format(now.subtract(now.difference(postedAt)));
   }
 
-  bool isLikedBy(User user) {
-    return likes.any((like) => like.user.name == user.name);
+  Future<bool> isLikedBy(String id, User user) async {
+    var status = await storage.checkIsLikedBy(id, user);
+    return status;
   }
 
-  void addLikeIfUnlikedFor(User user) {
-    if (!isLikedBy(user)) {
-      likes.add(Like(user: user));
-    }
+  Future<bool> addLikeIfUnlikedFor(String id, User user) async {
+    var status = await storage.addLike(id, user);
+    return status;
   }
 
-  void toggleLikeFor(User user) {
-    if (isLikedBy(user)) {
-      likes.removeWhere((like) => like.user.name == user.name);
+  Future<bool> toggleLikeFor(String id, User user) async {
+    final status;
+    if (await isLikedBy(id, user)) {
+      status = await storage.removeLike(id, user);
     } else {
-      addLikeIfUnlikedFor(user);
+      status = await addLikeIfUnlikedFor(id, user);
     }
+    return status;
   }
 
   Post({
+    required this.id,
     required this.imageUrls,
     required this.user,
     required this.postedAt,
