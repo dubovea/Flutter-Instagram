@@ -69,6 +69,32 @@ class Storage {
     }
   }
 
+  Future<bool> addComment(String id, User user, String comment) async {
+    bool isCommentAdded = false;
+    try {
+      await FirebaseFirestore.instance
+          .collection("posts")
+          .doc(id)
+          .set({
+            'post': {
+              'comments': FieldValue.arrayUnion([
+                {
+                  'text': comment,
+                  'user': user.name,
+                  'commentedAt': DateTime.now(),
+                  'likes': []
+                }
+              ])
+            }
+          }, SetOptions(merge: true))
+          .then((value) => isCommentAdded = true)
+          .catchError((error) => print('Error addComent for doc $id'));
+      return isCommentAdded;
+    } catch (e) {
+      throw Exception('addComent failed');
+    }
+  }
+
   Future<bool> checkIsLikedBy(String id, User user) async {
     try {
       final snapshot = await FirebaseFirestore.instance
@@ -87,6 +113,61 @@ class Storage {
   }
 
   Future<bool> removeLike(String id, User user) async {
+    bool isLiked = true;
+    try {
+      final data = await FirebaseFirestore.instance
+              .collection("posts")
+              .doc(id)
+              .get(),
+          likes = data.data()!['post']['likes'],
+          record = likes.firstWhere((like) => like['user'] == user.name);
+      await FirebaseFirestore.instance
+          .collection("posts")
+          .doc(id)
+          .set({
+            'post': {
+              'likes': FieldValue.arrayRemove([record])
+            }
+          }, SetOptions(merge: true))
+          .then((_) => isLiked = false)
+          .catchError((error) => print('Error remove like for doc $id'));
+      return isLiked;
+      // <-- Updated data
+    } catch (e) {
+      throw Exception('removeLike failed');
+    }
+  },
+
+  Future<bool> removeCommentLike(String id, User user, Comment comment) async {
+    bool isLiked = true;
+    try {
+      final data = await FirebaseFirestore.instance
+              .collection("posts")
+              .doc(id)
+              .get(),
+          comments = data.data()!['post']['comments'],
+          record = comments.firstWhere((o) => o['user'] == user.name && o['commentedAt'] == comment.commentedAt
+           && o['text'] == comment.text);
+      await FirebaseFirestore.instance
+          .collection("posts")
+          .doc(id)
+          .set({
+            'post': {
+              'comments': {
+                'likes': FieldValue.arrayRemove([record])
+              }
+            }
+          }, SetOptions(merge: true))
+          .then((_) => isLiked = false)
+          .catchError((error) => print('Error remove like for doc $id'));
+      return isLiked;
+      // <-- Updated data
+    } catch (e) {
+      throw Exception('removeLike failed');
+    }
+  }
+
+  Future<bool> addCommentLike(String id, User user, Comment comment) async {
     bool isLiked = true;
     try {
       final data = await FirebaseFirestore.instance

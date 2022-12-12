@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:meta/meta.dart';
 import 'package:instagramexample/utils/storage_service.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -102,12 +99,14 @@ class Comment {
     return likes.any((like) => like.user.name == user.name);
   }
 
-  void toggleLikeFor(User user) {
-    if (isLikedBy(user)) {
-      likes.removeWhere((like) => like.user.name == user.name);
+  void toggleLikeFor(String id, User user, Comment comment) {
+    final status;
+    if (await isLikedBy(id, user)) {
+      status = await storage.removeCommentLike(id, user, comment);
     } else {
-      likes.add(Like(user: user));
+      status = await storage.addCommentLike(id, user, comment);
     }
+    return status;
   }
 
   Comment({

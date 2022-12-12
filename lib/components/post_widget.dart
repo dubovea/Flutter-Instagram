@@ -63,6 +63,10 @@ class _PostWidgetState extends State<PostWidget> {
     setState(() => _isSaved = !_isSaved);
   }
 
+  Future<void> _addComment(String text) async {
+    await storage.addComment(widget.post.id, currentUser, text);
+  }
+
   void _showAddCommentModal() {
     showModalBottomSheet(
       context: context,
@@ -73,14 +77,7 @@ class _PostWidgetState extends State<PostWidget> {
           child: AddCommentModal(
             user: currentUser,
             onPost: (String text) {
-              setState(() {
-                widget.post.comments.add(Comment(
-                  text: text,
-                  user: currentUser,
-                  commentedAt: DateTime.now(),
-                  likes: [],
-                ));
-              });
+              _addComment(text);
               Navigator.pop(context);
             },
           ),
@@ -220,8 +217,7 @@ class _PostWidgetState extends State<PostWidget> {
                       Text(widget.post.likes[0].user.name, style: bold),
                       if (widget.post.likes.length > 1) ...[
                         Text(' и еще'),
-                        Text(' ${widget.post.likes.length - 1}',
-                            style: bold),
+                        Text(' ${widget.post.likes.length - 1}', style: bold),
                       ]
                     ],
                   ),
@@ -246,7 +242,7 @@ class _PostWidgetState extends State<PostWidget> {
                   ),
                   GestureDetector(
                     child: Text(
-                      'Add a comment...',
+                      'Добавить комментарий...',
                       style: TextStyle(color: Colors.grey),
                     ),
                     onTap: _showAddCommentModal,

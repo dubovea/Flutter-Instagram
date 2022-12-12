@@ -53,8 +53,7 @@ class _CommentWidgetState extends State<CommentWidget> {
           Padding(
               padding: const EdgeInsets.only(right: 16.0),
               child: HeartIconAnimator(
-                // isLiked: widget.comment.isLikedBy(currentUser),
-                isLiked: true,
+                isLiked: widget.comment.isLikedBy(currentUser),
                 size: 14.0,
                 onTap: _toggleIsLiked,
                 triggerAnimationStream: const Stream.empty(),
