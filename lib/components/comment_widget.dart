@@ -16,7 +16,8 @@ class CommentWidget extends StatefulWidget {
 
 class _CommentWidgetState extends State<CommentWidget> {
   void _toggleIsLiked() {
-    setState(() => widget.comment.toggleLikeFor(currentUser));
+    widget.comment
+        .toggleLikeFor('u5pYblZsVi9O3iGpdUjF', currentUser, widget.comment);
   }
 
   Text _buildRichText() {

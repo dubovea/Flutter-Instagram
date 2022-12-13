@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:instagramexample/components/comment_texts.dart';
 import 'package:instagramexample/components/heart_icon_animator.dart';
 import 'package:instagramexample/components/heart_overlay_animator.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -208,30 +209,22 @@ class _PostWidgetState extends State<PostWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               // Liked by
-              if (widget.post.likes.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Row(
-                    children: <Widget>[
-                      Text('Нравится '),
-                      Text(widget.post.likes[0].user.name, style: bold),
-                      if (widget.post.likes.length > 1) ...[
-                        Text(' и еще'),
-                        Text(' ${widget.post.likes.length - 1}', style: bold),
-                      ]
-                    ],
-                  ),
+              // if (widget.post.likes.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Row(
+                  children: <Widget>[
+                    // Text('Нравится '),
+                    // Text(widget.post.likes[0].user.name, style: bold),
+                    // if (widget.post.likes.length > 1) ...[
+                    //   Text(' и еще'),
+                    //   Text(' ${widget.post.likes.length - 1}', style: bold),
+                    // ]
+                  ],
                 ),
+              ),
               // Comments
-              if (widget.post.comments.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 4.0),
-                  child: Column(
-                    children: widget.post.comments
-                        .map((Comment c) => CommentWidget(c))
-                        .toList(),
-                  ),
-                ),
+              CommentTexts(widget.post.id),
               // Add a comment...
               Row(
                 children: <Widget>[

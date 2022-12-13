@@ -36,8 +36,6 @@ class Post {
   final User user;
   final DateTime postedAt;
 
-  List<Like> likes;
-  List<Comment> comments;
   String location;
 
   String timeAgo() {
@@ -70,8 +68,6 @@ class Post {
     required this.imageUrls,
     required this.user,
     required this.postedAt,
-    required this.likes,
-    required this.comments,
     required this.location,
   });
 }
@@ -99,13 +95,14 @@ class Comment {
     return likes.any((like) => like.user.name == user.name);
   }
 
-  void toggleLikeFor(String id, User user, Comment comment) {
-    final status;
-    if (await isLikedBy(id, user)) {
-      status = await storage.removeCommentLike(id, user, comment);
-    } else {
-      status = await storage.addCommentLike(id, user, comment);
-    }
+  Future<bool> toggleLikeFor(String id, User user, Comment comment) async {
+    // final status;
+    // if (await isLikedBy(id, user)) {
+    //   status = await storage.removeCommentLike(id, user, comment);
+    // } else {
+    //   status = await storage.addCommentLike(id, user);
+    // }
+    final status = await storage.addCommentLike(id, user, comment);
     return status;
   }
 

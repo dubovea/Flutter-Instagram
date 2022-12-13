@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -21,8 +20,6 @@ class Storage {
           'post': {
             'user': 'Dubov_EA',
             'imageUrls': [downloadUrl],
-            'likes': [],
-            'comments': [],
             'postedAt': DateTime.now(),
             'location': 'Surgut'
           }
@@ -54,13 +51,8 @@ class Storage {
       await FirebaseFirestore.instance
           .collection("posts")
           .doc(id)
-          .set({
-            'post': {
-              'likes': FieldValue.arrayUnion([
-                {'user': user.name}
-              ])
-            }
-          }, SetOptions(merge: true))
+          .collection('likes')
+          .add({'user': user.name})
           .then((value) => isLikeAdded = true)
           .catchError((error) => print('Error add like for doc $id'));
       return isLikeAdded;
@@ -75,20 +67,15 @@ class Storage {
       await FirebaseFirestore.instance
           .collection("posts")
           .doc(id)
-          .set({
-            'post': {
-              'comments': FieldValue.arrayUnion([
-                {
-                  'text': comment,
-                  'user': user.name,
-                  'commentedAt': DateTime.now(),
-                  'likes': []
-                }
-              ])
-            }
-          }, SetOptions(merge: true))
+          .collection('comments')
+          .add({
+            'text': comment,
+            'user': user.name,
+            'commentedAt': DateTime.now(),
+            'likes': []
+          })
           .then((value) => isCommentAdded = true)
-          .catchError((error) => print('Error addComent for doc $id'));
+          .catchError((error) => print('Error addComent: $error'));
       return isCommentAdded;
     } catch (e) {
       throw Exception('addComent failed');
@@ -136,7 +123,7 @@ class Storage {
     } catch (e) {
       throw Exception('removeLike failed');
     }
-  },
+  }
 
   Future<bool> removeCommentLike(String id, User user, Comment comment) async {
     bool isLiked = true;
@@ -146,8 +133,10 @@ class Storage {
               .doc(id)
               .get(),
           comments = data.data()!['post']['comments'],
-          record = comments.firstWhere((o) => o['user'] == user.name && o['commentedAt'] == comment.commentedAt
-           && o['text'] == comment.text);
+          record = comments.firstWhere((o) =>
+              o['user'] == user.name &&
+              o['commentedAt'] == comment.commentedAt &&
+              o['text'] == comment.text);
       await FirebaseFirestore.instance
           .collection("posts")
           .doc(id)
@@ -174,18 +163,36 @@ class Storage {
               .collection("posts")
               .doc(id)
               .get(),
-          likes = data.data()!['post']['likes'],
-          record = likes.firstWhere((like) => like['user'] == user.name);
+          comments = data.data()!['post']['comments'].map((o) => {
+                if (o['user'] == user.name &&
+                    o['commentedAt'] == comment.commentedAt &&
+                    o['text'] == comment.text)
+                  {
+                    Comment(
+                        commentedAt: o['commentedAt'],
+                        text: o['text'],
+                        user: o['user'],
+                        likes: List.from(o['likes'])
+                            .map((o) =>
+                                Like(user: User(name: o['user'], imageUrl: '')))
+                            .toList())
+                  }
+              });
+
       await FirebaseFirestore.instance
           .collection("posts")
           .doc(id)
+          .collection('comments')
+          .doc(id)
           .set({
             'post': {
-              'likes': FieldValue.arrayRemove([record])
+              'comments': {
+                'likes': FieldValue.arrayRemove([123])
+              }
             }
           }, SetOptions(merge: true))
           .then((_) => isLiked = false)
-          .catchError((error) => print('Error remove like for doc $id'));
+          .catchError((error) => print('addCommentLike error with: $error'));
       return isLiked;
       // <-- Updated data
     } catch (e) {
