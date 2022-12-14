@@ -3,6 +3,7 @@ import 'package:dart_now_time_filename/dart_now_time_filename.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/models.dart';
 import '../utils/storage_service.dart';
 
 class Camera extends StatefulWidget {
@@ -122,7 +123,7 @@ class DisplayPictureScreen extends StatelessWidget {
           onPressed: () {
             final filename = NowFilename.gen(prefix: 'inst-', ext: '.jpeg');
             storage
-                .uploadFile(imagePath, filename)
+                .uploadFile(currentUser, imagePath, filename)
                 .then((value) => print('Done'));
 
             //TODO

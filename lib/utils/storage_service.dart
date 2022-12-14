@@ -8,7 +8,7 @@ class Storage {
   final firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
 
-  Future<void> uploadFile(String filePath, String fileName) async {
+  Future<void> uploadFile(User user, String filePath, String fileName) async {
     File file = File(filePath);
 
     try {
@@ -17,7 +17,7 @@ class Storage {
       if (snapshot.state == firebase_storage.TaskState.success) {
         final String downloadUrl = await snapshot.ref.getDownloadURL();
         FirebaseFirestore.instance.collection('posts').add({
-          'user': 'Dubov_EA',
+          'user': user.name,
           'imageUrls': [downloadUrl],
           'postedAt': DateTime.now(),
           'location': 'Surgut'

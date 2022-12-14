@@ -2,6 +2,8 @@ import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:instagramexample/pages/my_posts.dart';
+import 'package:instagramexample/utils/models.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:instagramexample/pages/authorization.dart';
 import 'package:instagramexample/pages/home.dart';
@@ -127,8 +129,7 @@ class _MainScaffoldState extends State<MainScaffold> {
         _handleScroll();
         return Favourites(tabName: tabName);
       case 4:
-        _handleScroll();
-        return Favourites(tabName: tabName);
+        return MyPosts(currentUser);
       default:
     }
   }
