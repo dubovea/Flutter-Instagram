@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:instagramexample/components/comment_texts.dart';
 import 'package:instagramexample/components/heart_icon_animator.dart';
 import 'package:instagramexample/components/heart_overlay_animator.dart';
+import 'package:instagramexample/components/likes_text.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:instagramexample/utils/models.dart';
 import 'package:instagramexample/components/avatar_widget.dart';
-import 'package:instagramexample/components/comment_widget.dart';
 import 'package:instagramexample/utils/ui_utils.dart';
 import 'package:instagramexample/utils/storage_service.dart';
 
@@ -210,19 +210,7 @@ class _PostWidgetState extends State<PostWidget> {
             children: <Widget>[
               // Liked by
               // if (widget.post.likes.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Row(
-                  children: <Widget>[
-                    // Text('Нравится '),
-                    // Text(widget.post.likes[0].user.name, style: bold),
-                    // if (widget.post.likes.length > 1) ...[
-                    //   Text(' и еще'),
-                    //   Text(' ${widget.post.likes.length - 1}', style: bold),
-                    // ]
-                  ],
-                ),
-              ),
+              LikesText(widget.post.id),
               // Comments
               CommentTexts(widget.post.id),
               // Add a comment...

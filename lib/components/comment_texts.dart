@@ -32,12 +32,17 @@ class CommentTextsState extends State<CommentTexts> {
             itemBuilder: (ctx, i) {
               final data = snapshot.data!.docs[i];
               if (snapshot.hasData) {
+                var likesData = List.from(data['likes'])
+                    .map((o) => Like(
+                        id: o['id'], user: User(name: o['user'], imageUrl: '')))
+                    .toList();
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 4.0),
                   child: Column(children: [
                     CommentWidget(Comment(
+                        docRefId: widget.docRef,
                         commentedAt: data['commentedAt'].toDate(),
-                        likes: [],
+                        likes: likesData,
                         text: data['text'],
                         user: User(name: data['user'], imageUrl: '')))
                   ]),

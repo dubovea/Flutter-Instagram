@@ -20,13 +20,13 @@ class Home extends StatelessWidget {
           return ListView.builder(
             itemCount: snapshot.data?.docs.length,
             itemBuilder: (ctx, i) {
-              var postData = snapshot.data!.docs[i].get('post');
+              var postData = snapshot.data!.docs[i];
               Post post = Post(
                 id: snapshot.data!.docs[i].id,
                 user: grootlover,
-                imageUrls: List<String>.from(postData['imageUrls']),
-                location: postData['location'],
-                postedAt: postData['postedAt'].toDate(),
+                imageUrls: List<String>.from(postData.get('imageUrls')),
+                location: postData.get('location'),
+                postedAt: postData.get('postedAt').toDate(),
               );
               if (i == 0) {
                 return Column(children: [StoriesBarWidget(), PostWidget(post)]);

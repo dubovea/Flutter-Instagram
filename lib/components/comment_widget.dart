@@ -16,8 +16,7 @@ class CommentWidget extends StatefulWidget {
 
 class _CommentWidgetState extends State<CommentWidget> {
   void _toggleIsLiked() {
-    widget.comment
-        .toggleLikeFor('u5pYblZsVi9O3iGpdUjF', currentUser, widget.comment);
+    widget.comment.toggleLikeFor(currentUser);
   }
 
   Text _buildRichText() {
@@ -53,11 +52,21 @@ class _CommentWidgetState extends State<CommentWidget> {
           Spacer(),
           Padding(
               padding: const EdgeInsets.only(right: 16.0),
-              child: HeartIconAnimator(
-                isLiked: widget.comment.isLikedBy(currentUser),
-                size: 14.0,
-                onTap: _toggleIsLiked,
-                triggerAnimationStream: const Stream.empty(),
+              child: Column(
+                children: [
+                  HeartIconAnimator(
+                    isLiked: widget.comment.isLikedBy(currentUser),
+                    size: 14.0,
+                    onTap: _toggleIsLiked,
+                    triggerAnimationStream: const Stream.empty(),
+                  ),
+                  Text(
+                    widget.comment.likes.isNotEmpty
+                        ? '${widget.comment.likes.length}'
+                        : '',
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  )
+                ],
               ))
         ],
       ),

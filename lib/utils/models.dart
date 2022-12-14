@@ -28,7 +28,7 @@ const nebula = User(
     imageUrl: 'assets/images/nebula.jpg',
     stories: placeholderStories);
 
-const currentUser = starlord;
+const currentUser = rocket;
 
 class Post {
   final String id;
@@ -86,6 +86,7 @@ class User {
 }
 
 class Comment {
+  final String docRefId;
   String text;
   final User user;
   final DateTime commentedAt;
@@ -95,18 +96,18 @@ class Comment {
     return likes.any((like) => like.user.name == user.name);
   }
 
-  Future<bool> toggleLikeFor(String id, User user, Comment comment) async {
-    // final status;
-    // if (await isLikedBy(id, user)) {
-    //   status = await storage.removeCommentLike(id, user, comment);
-    // } else {
-    //   status = await storage.addCommentLike(id, user);
-    // }
-    final status = await storage.addCommentLike(id, user, comment);
+  Future<bool> toggleLikeFor(User user) async {
+    final status;
+    if (await isLikedBy(user)) {
+      status = await storage.removeCommentLike(user, this);
+    } else {
+      status = await storage.addCommentLike(user, this);
+    }
     return status;
   }
 
   Comment({
+    required this.docRefId,
     required this.text,
     required this.user,
     required this.commentedAt,
@@ -115,9 +116,10 @@ class Comment {
 }
 
 class Like {
+  final String id;
   final User user;
 
-  Like({required this.user});
+  Like({required this.id, required this.user});
 }
 
 class Story {
