@@ -22,20 +22,30 @@ class MyPostsState extends State<MyPosts> {
           if (!snapshot.hasData) {
             return const Text('No records');
           }
-          return ListView.builder(
-            itemCount: snapshot.data?.docs.length,
-            itemBuilder: (ctx, i) {
-              var postData = snapshot.data!.docs[i];
-              Post post = Post(
-                id: snapshot.data!.docs[i].id,
-                user: grootlover,
-                imageUrls: List<String>.from(postData.get('imageUrls')),
-                location: postData.get('location'),
-                postedAt: postData.get('postedAt').toDate(),
-              );
-              return PostWidget(post);
-            },
-          );
+          return GridView.builder(
+              itemCount: snapshot.data?.docs.length,
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 5.0,
+                mainAxisSpacing: 5.0,
+              ),
+              itemBuilder: (ctx, i) {
+                var postData = snapshot.data!.docs[i],
+                    images = List<String>.from(postData.get('imageUrls'));
+                Post post = Post(
+                  id: snapshot.data!.docs[i].id,
+                  user: grootlover,
+                  imageUrls: images,
+                  location: postData.get('location'),
+                  postedAt: postData.get('postedAt').toDate(),
+                );
+                return Image.network(
+                  images[0],
+                  fit: BoxFit.fitWidth,
+                  width: MediaQuery.of(context).size.width,
+                );
+              });
         });
   }
 }
