@@ -5,7 +5,7 @@ class AvatarWidget extends StatelessWidget {
   final User user;
   final VoidCallback onTap;
   final EdgeInsetsGeometry padding;
-  final bool isLarge;
+  final double radius;
   final bool isShowingUsernameLabel;
   final bool isCurrentUserStory;
 
@@ -13,7 +13,7 @@ class AvatarWidget extends StatelessWidget {
     required this.user,
     required this.onTap,
     this.padding = const EdgeInsets.all(8.0),
-    this.isLarge = false,
+    this.radius = 14.0,
     this.isShowingUsernameLabel = false,
     this.isCurrentUserStory = false,
   });
@@ -43,7 +43,6 @@ class AvatarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final radius = isLarge ? 28.0 : 14.0;
     final avatar = Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[

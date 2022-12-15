@@ -66,7 +66,7 @@ class StoriesBarWidget extends StatelessWidget {
           return AvatarWidget(
             user: _users[i],
             onTap: () => _onUserStoryTap(context, i),
-            isLarge: true,
+            radius: 28.0,
             isShowingUsernameLabel: true,
             isCurrentUserStory: i == 0,
           );

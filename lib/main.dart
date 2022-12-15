@@ -2,9 +2,9 @@ import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:instagramexample/components/home_appbar_widget.dart';
 import 'package:instagramexample/pages/my_posts.dart';
 import 'package:instagramexample/utils/models.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:instagramexample/pages/authorization.dart';
 import 'package:instagramexample/pages/home.dart';
 import 'package:instagramexample/pages/favourites.dart';
@@ -13,7 +13,7 @@ import 'package:instagramexample/utils/ui_utils.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); 
+  await Firebase.initializeApp();
   // Obtain a list of the available cameras on the device.
   final cameras = await availableCameras();
 
@@ -143,7 +143,7 @@ class _MainScaffoldState extends State<MainScaffold> {
     const unselectedIcons = <IconData>[
       Icons.home_outlined,
       Icons.search,
-      OMIcons.addBox,
+      Icons.live_tv_outlined,
       Icons.favorite_border,
       Icons.person_outline,
     ];
@@ -174,48 +174,7 @@ class _MainScaffoldState extends State<MainScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 1.0,
-        backgroundColor: Colors.grey[50],
-        title: Row(
-          children: [
-            Builder(builder: (BuildContext context) {
-              return GestureDetector(
-                child: const Icon(Icons.camera_alt,
-                    color: Colors.black, size: 32.0),
-                onTap: () => showSnackbar(context, 'Add Photo'),
-              );
-            }),
-            const SizedBox(width: 12.0),
-            GestureDetector(
-              onTap: _scrollToTop,
-              child: const Text(
-                'Instagram',
-                style: TextStyle(
-                    fontFamily: 'Billabong',
-                    color: Colors.black,
-                    fontSize: 22.0),
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          Builder(builder: (BuildContext context) {
-            return IconButton(
-              color: Colors.black,
-              icon: const Icon(Icons.live_tv_outlined),
-              onPressed: () => showSnackbar(context, 'Live TV'),
-            );
-          }),
-          Builder(builder: (BuildContext context) {
-            return IconButton(
-              color: Colors.black,
-              icon: const Icon(Icons.telegram),
-              onPressed: () => showSnackbar(context, 'My Messages'),
-            );
-          }),
-        ],
-      ),
+      appBar: _tabSelectedIndex == 0 ? HomeAppBar() : null,
       body: _buildBody(),
       bottomNavigationBar: _buildBottomNavigation(),
     );
