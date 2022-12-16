@@ -42,7 +42,9 @@ class _PostWidgetState extends State<PostWidget> {
 
   void _asyncCheckIsLiked() async {
     _isLiked = await widget.post.isLikedBy(widget.post.id, currentUser);
-    setState(() => _isLiked = _isLiked);
+    if (mounted) {
+      setState(() => _isLiked = _isLiked);
+    }
   }
 
   void _updateImageIndex(int index, reason) {

@@ -18,6 +18,7 @@ class Home extends StatelessWidget {
             return const Text('No records');
           }
           return ListView.builder(
+            controller: scrollController,
             itemCount: snapshot.data?.docs.length,
             itemBuilder: (ctx, i) {
               var postData = snapshot.data!.docs[i];

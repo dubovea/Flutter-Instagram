@@ -64,7 +64,7 @@ class _MainScaffoldState extends State<MainScaffold> {
   // Save the home page scrolling offset,
   // used when navigating back to the home page from another tab.
   double _lastFeedScrollOffset = 0;
-  late ScrollController _scrollController;
+  ScrollController _scrollController = ScrollController();
 
   get firstCamera => firstCamera;
 
@@ -75,22 +75,21 @@ class _MainScaffoldState extends State<MainScaffold> {
   }
 
   void _scrollToTop() {
-    if (_scrollController == null) {
-      return;
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        0.0,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.decelerate,
+      );
     }
-    _scrollController.animateTo(
-      0.0,
-      duration: const Duration(milliseconds: 250),
-      curve: Curves.decelerate,
-    );
   }
 
   // Call this when changing the body that doesn't use a ScrollController.
   void _handleScroll() {
-    if (_scrollController != null) {
+    if (_scrollController.hasClients) {
       _lastFeedScrollOffset = _scrollController.offset;
       _scrollController.dispose();
-      _scrollController = null as ScrollController;
+      _scrollController = ScrollController();
     }
   }
 
@@ -132,6 +131,7 @@ class _MainScaffoldState extends State<MainScaffold> {
         return MyPosts(currentUser);
       default:
     }
+    return null;
   }
 
   void _openCamera() async {

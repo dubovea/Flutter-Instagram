@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:instagramexample/components/avatar_widget.dart';
 import 'package:instagramexample/components/mypost_widget.dart';
 import 'package:instagramexample/utils/models.dart';
@@ -8,7 +7,7 @@ import 'package:instagramexample/utils/models.dart';
 import '../utils/ui_utils.dart';
 
 class MyPosts extends StatefulWidget {
-  MyPosts(User currentUser, {super.key});
+  const MyPosts(User currentUser, {super.key});
 
   @override
   MyPostsState createState() => MyPostsState();
@@ -18,12 +17,13 @@ class MyPostsState extends State<MyPosts> with SingleTickerProviderStateMixin {
   late final TabController _tabController;
 
   int _selectedTab = 0;
+  final int _countTabItems = 2;
 
   @override
   void initState() {
     super.initState();
 
-    _tabController = TabController(vsync: this, length: 3);
+    _tabController = TabController(vsync: this, length: _countTabItems);
 
     _tabController.addListener(() {
       if (!_tabController.indexIsChanging) {
@@ -162,7 +162,7 @@ class MyPostsState extends State<MyPosts> with SingleTickerProviderStateMixin {
             SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: DefaultTabController(
-                    length: 2,
+                    length: _countTabItems,
                     child: Column(
                       children: <Widget>[
                         Material(
@@ -174,9 +174,11 @@ class MyPostsState extends State<MyPosts> with SingleTickerProviderStateMixin {
                             controller: _tabController,
                             labelPadding: const EdgeInsets.all(0.0),
                             tabs: [
-                              _getTab(0, const Icon(Icons.grid_on)),
                               _getTab(
-                                  1, const Icon(Icons.account_box_outlined)),
+                                  index: 0, child: const Icon(Icons.grid_on)),
+                              _getTab(
+                                  index: 1,
+                                  child: const Icon(Icons.account_box_outlined))
                             ],
                           ),
                         ),
@@ -196,26 +198,25 @@ class MyPostsState extends State<MyPosts> with SingleTickerProviderStateMixin {
         ));
   }
 
-  _getTab(index, child) {
+  _getTab({required int index, required Widget child}) {
     return Tab(
       child: SizedBox.expand(
         child: Container(
-          child: child,
           decoration: BoxDecoration(
-              color:
-                  (_selectedTab == index ? Colors.white : Colors.grey.shade300),
-              borderRadius: _generateBorderRadius(index)),
+              color: Colors.white, borderRadius: _generateBorderRadius(index)),
+          child: child,
         ),
       ),
     );
   }
 
-  _generateBorderRadius(index) {
-    if ((index + 1) == _selectedTab)
+  _generateBorderRadius(int index) {
+    if ((index + 1) == _selectedTab) {
       return const BorderRadius.only(bottomRight: Radius.circular(10.0));
-    else if ((index - 1) == _selectedTab)
+    } else if ((index - 1) == _selectedTab) {
       return const BorderRadius.only(bottomLeft: Radius.circular(10.0));
-    else
+    } else {
       return BorderRadius.zero;
+    }
   }
 }
