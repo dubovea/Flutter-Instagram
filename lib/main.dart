@@ -3,9 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:instagramexample/components/home_appbar_widget.dart';
+import 'package:instagramexample/pages/auth.dart';
 import 'package:instagramexample/pages/my_posts.dart';
 import 'package:instagramexample/utils/models.dart';
-import 'package:instagramexample/pages/authorization.dart';
 import 'package:instagramexample/pages/home.dart';
 import 'package:instagramexample/pages/favourites.dart';
 import 'package:instagramexample/components/camera.dart';
@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.black,
       ),
       routes: {
-        '/': (context) => Authorization(),
+        '/': (context) => Auth(),
         '/main': (context) => MainScaffold(),
         '/favourites': (context) => Favourites(tabName: 'Home'),
         '/camera': (context) => Camera(

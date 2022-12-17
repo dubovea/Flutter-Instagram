@@ -7,10 +7,11 @@ import 'package:instagramexample/utils/ui_utils.dart';
 
 class Home extends StatelessWidget {
   final ScrollController scrollController;
-
   const Home({super.key, required this.scrollController});
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as UserArguments;
+
     return StreamBuilder(
         stream: FirebaseFirestore.instance.collection('posts').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

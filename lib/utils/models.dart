@@ -30,6 +30,13 @@ const nebula = User(
 
 const currentUser = rocket;
 
+class UserArguments {
+  final String name;
+  final String image;
+
+  UserArguments({required this.name, required this.image});
+}
+
 class Post {
   final String id;
   List<String> imageUrls;
