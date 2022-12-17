@@ -9,11 +9,12 @@ import 'package:instagramexample/pages/authorization.dart';
 import 'package:instagramexample/pages/home.dart';
 import 'package:instagramexample/pages/favourites.dart';
 import 'package:instagramexample/components/camera.dart';
-import 'package:instagramexample/utils/ui_utils.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await dotenv.load();
   // Obtain a list of the available cameras on the device.
   final cameras = await availableCameras();
 
@@ -27,6 +28,11 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
+  bool isBusy = false;
+  bool isLoggedIn = false;
+  String errorMessage = '';
+  String name = '';
+  String picture = '';
   var firstCamera;
 
   MyApp({super.key, required this.firstCamera});
@@ -40,7 +46,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.black,
       ),
       routes: {
-        '/': (context) => Auhorization(),
+        '/': (context) => Authorization(),
         '/main': (context) => MainScaffold(),
         '/favourites': (context) => Favourites(tabName: 'Home'),
         '/camera': (context) => Camera(
