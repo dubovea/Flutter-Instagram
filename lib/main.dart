@@ -23,7 +23,7 @@ Future<void> main() async {
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
-    runApp(new MyApp(firstCamera: firstCamera));
+    runApp(MyApp(firstCamera: firstCamera));
   });
 }
 
@@ -46,8 +46,8 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.black,
       ),
       routes: {
-        '/': (context) => Auth(),
-        '/main': (context) => MainScaffold(),
+        '/': (context) => const Auth(),
+        '/main': (context) => const MainScaffold(),
         '/favourites': (context) => Favourites(tabName: 'Home'),
         '/camera': (context) => Camera(
               // Pass the appropriate camera to the TakePictureScreen widget.
@@ -59,6 +59,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MainScaffold extends StatefulWidget {
+  const MainScaffold({super.key});
+
   @override
   _MainScaffoldState createState() => _MainScaffoldState();
 }
@@ -71,8 +73,6 @@ class _MainScaffoldState extends State<MainScaffold> {
   // used when navigating back to the home page from another tab.
   double _lastFeedScrollOffset = 0;
   ScrollController _scrollController = ScrollController();
-
-  get firstCamera => firstCamera;
 
   @override
   void dispose() {
@@ -134,7 +134,7 @@ class _MainScaffoldState extends State<MainScaffold> {
         _handleScroll();
         return Favourites(tabName: tabName);
       case 4:
-        return MyPosts(currentUser);
+        return const MyPosts(currentUser);
       default:
     }
     return null;
@@ -180,7 +180,7 @@ class _MainScaffoldState extends State<MainScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _tabSelectedIndex == 0 ? HomeAppBar() : null,
+      appBar: _tabSelectedIndex == 0 ? const HomeAppBar() : null,
       body: _buildBody(),
       bottomNavigationBar: _buildBottomNavigation(),
     );

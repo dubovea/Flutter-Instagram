@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:instagramexample/components/post_widget.dart';
 import 'package:instagramexample/utils/models.dart';
 
 import 'comment_widget.dart';
 
 class CommentTexts extends StatefulWidget {
   final docRef;
-  const CommentTexts(this.docRef);
+  const CommentTexts(this.docRef, {super.key});
 
   @override
   CommentTextsState createState() => CommentTextsState();
@@ -50,7 +49,8 @@ class CommentTextsState extends State<CommentTexts> {
               }
               return Padding(
                 padding: const EdgeInsets.only(bottom: 4.0),
-                child: Column(children: [Text('Комментарии отсутствуют.')]),
+                child:
+                    Column(children: const [Text('Комментарии отсутствуют.')]),
               );
             },
           );

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:instagramexample/utils/ui_utils.dart';
 
 class HomeAppBar extends StatelessWidget with PreferredSizeWidget {
+  const HomeAppBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AppBar(

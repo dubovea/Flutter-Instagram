@@ -15,7 +15,7 @@ import 'package:instagramexample/utils/storage_service.dart';
 class PostWidget extends StatefulWidget {
   final Post post;
 
-  PostWidget(this.post);
+  const PostWidget(this.post, {super.key});
 
   @override
   _PostWidgetState createState() => _PostWidgetState();
@@ -106,13 +106,13 @@ class _PostWidgetState extends State<PostWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(widget.post.user.name, style: bold),
-                if (widget.post.location != null) Text(widget.post.location)
+                if (widget.post.location.isNotEmpty) Text(widget.post.location)
               ],
             ),
             const Spacer(),
             PopupMenuButton(
               initialValue: 2,
-              child: Center(child: Icon(Icons.more_vert)),
+              child: const Center(child: Icon(Icons.more_vert)),
               itemBuilder: (context) {
                 return List.generate(1, (index) {
                   return PopupMenuItem(
@@ -179,28 +179,29 @@ class _PostWidgetState extends State<PostWidget> {
             IconButton(
               padding: EdgeInsets.zero,
               iconSize: 28.0,
-              icon: Icon(Icons.chat_bubble_outline),
+              icon: const Icon(Icons.chat_bubble_outline),
               onPressed: _showAddCommentModal,
             ),
             IconButton(
               padding: EdgeInsets.zero,
               iconSize: 28.0,
-              icon: Icon(OMIcons.nearMe),
+              icon: const Icon(OMIcons.nearMe),
               onPressed: () => showSnackbar(context, 'Share'),
             ),
-            Spacer(),
+            const Spacer(),
             if (widget.post.imageUrls.length > 1)
               PhotoCarouselIndicator(
                 photoCount: widget.post.imageUrls.length,
                 activePhotoIndex: _currentImageIndex,
               ),
-            Spacer(),
-            Spacer(),
+            const Spacer(),
+            const Spacer(),
             IconButton(
               padding: EdgeInsets.zero,
               iconSize: 28.0,
-              icon:
-                  _isSaved ? Icon(Icons.bookmark) : Icon(Icons.bookmark_border),
+              icon: _isSaved
+                  ? const Icon(Icons.bookmark)
+                  : const Icon(Icons.bookmark_border),
               onPressed: _toggleIsSaved,
             )
           ],
@@ -220,22 +221,22 @@ class _PostWidgetState extends State<PostWidget> {
                 children: <Widget>[
                   AvatarWidget(
                     user: currentUser,
-                    padding: EdgeInsets.only(right: 8.0),
+                    padding: const EdgeInsets.only(right: 8.0),
                     onTap: () {},
                   ),
                   GestureDetector(
-                    child: Text(
+                    onTap: _showAddCommentModal,
+                    child: const Text(
                       'Добавить комментарий...',
                       style: TextStyle(color: Colors.grey),
                     ),
-                    onTap: _showAddCommentModal,
                   ),
                 ],
               ),
               // Posted Timestamp
               Text(
                 widget.post.timeAgo(),
-                style: TextStyle(color: Colors.grey, fontSize: 11.0),
+                style: const TextStyle(color: Colors.grey, fontSize: 11.0),
               ),
             ],
           ),
@@ -249,7 +250,8 @@ class PhotoCarouselIndicator extends StatelessWidget {
   final int photoCount;
   final int activePhotoIndex;
 
-  PhotoCarouselIndicator({
+  const PhotoCarouselIndicator({
+    super.key,
     required this.photoCount,
     required this.activePhotoIndex,
   });
@@ -284,7 +286,7 @@ class AddCommentModal extends StatefulWidget {
   final User user;
   final ValueChanged<String> onPost;
 
-  AddCommentModal({required this.user, required this.onPost});
+  const AddCommentModal({super.key, required this.user, required this.onPost});
 
   @override
   _AddCommentModalState createState() => _AddCommentModalState();
@@ -320,19 +322,19 @@ class _AddCommentModalState extends State<AddCommentModal> {
           child: TextField(
             controller: _textController,
             autofocus: true,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Add a comment...',
               border: InputBorder.none,
             ),
           ),
         ),
         TextButton(
-          child: Opacity(
-            opacity: _canPost ? 1.0 : 0.4,
-            child: Text('Post', style: TextStyle(color: Colors.blue)),
-          ),
           onPressed:
               _canPost ? () => widget.onPost(_textController.text) : null,
+          child: Opacity(
+            opacity: _canPost ? 1.0 : 0.4,
+            child: const Text('Post', style: TextStyle(color: Colors.blue)),
+          ),
         )
       ],
     );

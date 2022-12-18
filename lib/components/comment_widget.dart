@@ -8,7 +8,7 @@ import 'package:instagramexample/utils/ui_utils.dart';
 class CommentWidget extends StatefulWidget {
   final Comment comment;
 
-  CommentWidget(this.comment);
+  const CommentWidget(this.comment, {super.key});
 
   @override
   _CommentWidgetState createState() => _CommentWidgetState();
@@ -24,7 +24,7 @@ class _CommentWidgetState extends State<CommentWidget> {
     var textSpans = <TextSpan>[
       TextSpan(text: '${widget.comment.user.name} ', style: bold),
     ];
-    this.widget.comment.text.split(' ').forEach((word) {
+    widget.comment.text.split(' ').forEach((word) {
       if (word.startsWith('#') && word.length > 1) {
         if (currentTextData.isNotEmpty) {
           textSpans.add(TextSpan(text: currentTextData.toString()));
@@ -49,7 +49,7 @@ class _CommentWidgetState extends State<CommentWidget> {
       child: Row(
         children: <Widget>[
           _buildRichText(),
-          Spacer(),
+          const Spacer(),
           Padding(
               padding: const EdgeInsets.only(right: 16.0),
               child: Column(
@@ -64,7 +64,8 @@ class _CommentWidgetState extends State<CommentWidget> {
                     widget.comment.likes.isNotEmpty
                         ? '${widget.comment.likes.length}'
                         : '',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.bold),
                   )
                 ],
               ))

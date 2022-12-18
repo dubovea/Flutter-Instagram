@@ -10,6 +10,7 @@ class AvatarWidget extends StatelessWidget {
   final bool isCurrentUserStory;
 
   const AvatarWidget({
+    super.key,
     required this.user,
     required this.onTap,
     this.padding = const EdgeInsets.all(8.0),
@@ -76,7 +77,8 @@ class AvatarWidget extends StatelessWidget {
                       color: Colors.blue,
                       border: Border.all(color: Colors.white),
                     ),
-                    child: Icon(Icons.add, size: 16.0, color: Colors.white),
+                    child:
+                        const Icon(Icons.add, size: 16.0, color: Colors.white),
                   ),
                 ),
             ],
@@ -94,8 +96,8 @@ class AvatarWidget extends StatelessWidget {
     );
 
     return Padding(
-      padding: this.padding,
-      child: GestureDetector(child: avatar, onTap: onTap),
+      padding: padding,
+      child: GestureDetector(onTap: onTap, child: avatar),
     );
   }
 }

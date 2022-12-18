@@ -5,7 +5,7 @@ import '../utils/ui_utils.dart';
 
 class LikesText extends StatefulWidget {
   final docRef;
-  const LikesText(this.docRef);
+  const LikesText(this.docRef, {super.key});
 
   @override
   LikesTextState createState() => LikesTextState();
@@ -34,10 +34,10 @@ class LikesTextState extends State<LikesText> {
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: Row(
                       children: <Widget>[
-                        Text('Нравится '),
+                        const Text('Нравится '),
                         Text(snapshot.data!.docs[0].get('user'), style: bold),
                         if (data.length > 1) ...[
-                          Text(' и еще'),
+                          const Text(' и еще'),
                           Text(' ${data.length - 1}', style: bold),
                         ]
                       ],

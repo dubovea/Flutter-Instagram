@@ -112,7 +112,7 @@ class DisplayPictureScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Отобразить изображение')),
       body: Center(
-          child: Container(
+          child: SizedBox(
         height: 500,
         child: Image.file(
           fit: BoxFit.fill,
@@ -125,8 +125,6 @@ class DisplayPictureScreen extends StatelessWidget {
             storage
                 .uploadFile(currentUser, imagePath, filename)
                 .then((value) => print('Done'));
-
-            //TODO
             Navigator.pop(context);
             Navigator.pop(context);
           },

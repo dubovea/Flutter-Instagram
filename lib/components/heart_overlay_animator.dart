@@ -17,7 +17,7 @@ class _HeartOverlayAnimatorState extends State<HeartOverlayAnimator>
   @override
   void initState() {
     super.initState();
-    final quick = const Duration(milliseconds: 500);
+    const quick = Duration(milliseconds: 500);
     final scaleTween = Tween(begin: 0.0, end: 1.0);
     _heartController = AnimationController(duration: quick, vsync: this);
     _heartAnimation = scaleTween.animate(
@@ -53,7 +53,7 @@ class _HeartOverlayAnimatorState extends State<HeartOverlayAnimator>
   Widget build(BuildContext context) {
     return ScaleTransition(
       scale: _heartAnimation,
-      child: Icon(Icons.favorite, size: 80.0, color: Colors.white70),
+      child: const Icon(Icons.favorite, size: 80.0, color: Colors.white70),
     );
   }
 }

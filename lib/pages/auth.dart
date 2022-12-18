@@ -11,8 +11,6 @@ class Auth extends StatefulWidget {
 }
 
 class AuthState extends State<Auth> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  // This widget is the root of your application.
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
     padding: const EdgeInsets.all(15.0),
     backgroundColor: Colors.white,
@@ -32,7 +30,6 @@ class AuthState extends State<Auth> {
   bool isBusy = false;
   bool isLoggedIn = false;
   String errorMessage = '';
-  UserProfile? _user;
   Auth0? auth0;
 
   Future<void> loginAction() async {
@@ -54,7 +51,6 @@ class AuthState extends State<Auth> {
 
     setState(() {
       isLoggedIn = false;
-      _user = null;
     });
   }
 
