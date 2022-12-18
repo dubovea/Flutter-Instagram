@@ -10,13 +10,11 @@ class Home extends StatelessWidget {
   const Home({super.key, required this.scrollController});
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as UserArguments;
-
     return StreamBuilder(
         stream: FirebaseFirestore.instance.collection('posts').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
-            return const Text('No records');
+            return const Center(child: CircularProgressIndicator());
           }
           return ListView.builder(
             controller: scrollController,

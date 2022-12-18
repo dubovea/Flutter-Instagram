@@ -59,9 +59,10 @@ class AvatarWidget extends StatelessWidget {
                 child: Container(
                   decoration: _greyBoxShadowDecoration,
                   child: CircleAvatar(
-                    radius: radius,
-                    backgroundImage: AssetImage(user.imageUrl),
-                  ),
+                      radius: radius,
+                      backgroundImage: user.networkImageUrl.isNotEmpty
+                          ? NetworkImage(user.networkImageUrl)
+                          : AssetImage(user.imageUrl) as ImageProvider),
                 ),
               ),
               if (isCurrentUserStory && user.stories.isEmpty)

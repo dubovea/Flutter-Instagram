@@ -37,10 +37,11 @@ class AuthState extends State<Auth> {
         .webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME'])
         .login();
     if (credentials.accessToken.isNotEmpty) {
-      Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false,
-          arguments: UserArguments(
-              name: credentials.user.nickname!,
-              image: credentials.user.pictureUrl.toString()));
+      User user = User(
+          name: credentials.user.nickname!,
+          networkImageUrl: credentials.user.pictureUrl.toString());
+      setCurrentUser(user);
+      Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false);
     }
   }
 

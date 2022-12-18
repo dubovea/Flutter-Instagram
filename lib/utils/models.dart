@@ -28,14 +28,9 @@ const nebula = User(
     imageUrl: 'assets/images/nebula.jpg',
     stories: placeholderStories);
 
-const currentUser = rocket;
+var currentUser = rocket;
 
-class UserArguments {
-  final String name;
-  final String image;
-
-  UserArguments({required this.name, required this.image});
-}
+var setCurrentUser = (User user) => {currentUser = user};
 
 class Post {
   final String id;
@@ -83,13 +78,14 @@ class User {
   final String name;
 
   final String imageUrl;
+  final String networkImageUrl;
   final List<Story> stories;
 
-  const User({
-    required this.name,
-    required this.imageUrl,
-    this.stories = const <Story>[],
-  });
+  const User(
+      {required this.name,
+      this.imageUrl = '',
+      this.networkImageUrl = '',
+      this.stories = const <Story>[]});
 }
 
 class Comment {

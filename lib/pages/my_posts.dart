@@ -7,7 +7,7 @@ import 'package:instagramexample/utils/models.dart';
 import '../utils/ui_utils.dart';
 
 class MyPosts extends StatefulWidget {
-  const MyPosts(User currentUser, {super.key});
+  const MyPosts({super.key});
 
   @override
   MyPostsState createState() => MyPostsState();

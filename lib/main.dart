@@ -134,7 +134,7 @@ class _MainScaffoldState extends State<MainScaffold> {
         _handleScroll();
         return Favourites(tabName: tabName);
       case 4:
-        return const MyPosts(currentUser);
+        return const MyPosts();
       default:
     }
     return null;
